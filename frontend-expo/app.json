@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "frontend-expo",
-    "slug": "frontend-expo",
+    "slug": "ressourcesrelationnelles",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,10 +28,7 @@
     },
     "extra": {
       "API_URL": "http://localhost:8888/public",
-      "eas": 
-      {
-        "name": "frontend-expo",
-        "slug": "ressourcesrelationnelles",
+      "eas": {
         "projectId": "7c263122-09fe-4594-bc60-fb7e18182891"
       }
     }
