@@ -7,12 +7,5 @@
       "distribution": "internal"
     },
     "production": {}
-  },
-  "extra": 
-  {
-    "eas": 
-    {
-      "projectId": "com.ressources.relationnelles.frontend.expo"
-    }
   }
 }
