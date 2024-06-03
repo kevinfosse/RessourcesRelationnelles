@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Git\\RessourcesRelationnelles\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Git\\RessourcesRelationnelles\\frontend-expo\\app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend-expo\\app.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\build.gradle||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend-expo\\android\\build.gradle||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\app\\build.gradle||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:frontend-expo\\android\\app\\build.gradle||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "app.json",
+              "DocumentMoniker": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\app.json",
+              "RelativeDocumentMoniker": "frontend-expo\\app.json",
+              "ToolTip": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\app.json",
+              "RelativeToolTip": "frontend-expo\\app.json",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABoAAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-06-03T12:45:16.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "build.gradle",
+              "DocumentMoniker": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\app\\build.gradle",
+              "RelativeDocumentMoniker": "frontend-expo\\android\\app\\build.gradle",
+              "ToolTip": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\app\\build.gradle",
+              "RelativeToolTip": "frontend-expo\\android\\app\\build.gradle",
+              "ViewState": "AQIAALcAAAAAAAAAAAAlwNAAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-06-03T12:19:50.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "build.gradle",
+              "DocumentMoniker": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\build.gradle",
+              "RelativeDocumentMoniker": "frontend-expo\\android\\build.gradle",
+              "ToolTip": "C:\\Git\\RessourcesRelationnelles\\frontend-expo\\android\\build.gradle",
+              "RelativeToolTip": "frontend-expo\\android\\build.gradle",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-06-03T12:10:36.708Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

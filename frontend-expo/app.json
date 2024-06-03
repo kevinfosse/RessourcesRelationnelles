@@ -24,6 +24,7 @@
     },
     "android": {
       "package": "com.ressources.relationnelles",
+      "jsEngine": "hermes",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
