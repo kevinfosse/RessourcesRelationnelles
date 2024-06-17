@@ -21,7 +21,7 @@ public class MainActivity extends ReactActivity {
     // SplashScreen.show(...) has to be called after super.onCreate(...)
     // Below line is handled by '@expo/configure-splash-screen' command and it's discouraged to modify it manually
     SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
-    AppCenter.start(getApplication(), "8c7da78e-4d69-4637-9452-32bb0f646d01",
+    AppCenter.start(getApplication(), "015656ef-bcd6-4056-b676-604d48fb9287",
                   Analytics.class, Crashes.class);
   }
 
