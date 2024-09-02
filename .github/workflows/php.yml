@@ -27,7 +27,7 @@ jobs:
         coverage: none
 
     # Install dependencies (zip, unzip, curl, etc.)
-    - name: Install dependencies
+    - name: Installe les dependences
       run: sudo apt-get update && sudo apt-get install -y zip unzip
 
     # Install Composer dependencies
@@ -37,14 +37,14 @@ jobs:
         composer install
 
     # Start PHP built-in server (optional)
-    - name: Start PHP Server
+    - name: Demarre serveur php de test
       run: |
         cd backend
         php -S localhost:8000 -t public &
       continue-on-error: true
 
     # Deploy to the server via SSH
-    - name: Deploy to server
+    - name: Deploie sur le serveur
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
