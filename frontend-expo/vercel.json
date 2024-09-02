@@ -5,7 +5,7 @@
       "src": "frontend-expo/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "web-build"
+        "distDir": "frontend-expo/web-build"
       }
     }
   ],
