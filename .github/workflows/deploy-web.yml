@@ -27,9 +27,9 @@ jobs:
       env:
         SECRETS_SERVER_IP: ${{ secrets.SERVER_IP }}
       run: |
-        jq --arg url "http://${SECRETS_SERVER_IP}/service" \
+        jq --arg url "http://localhost/service" \
            '.API_URL = $url' frontend-expo/app.json > frontend-expo/app.json.tmp && mv frontend-expo/app.json.tmp frontend-expo/app.json
-        sed -i "s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|" frontend-expo/.env
+        sed -i "s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://localhost/service|" frontend-expo/.env
 
     - name: Build Project
       run: |
