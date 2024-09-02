@@ -49,13 +49,5 @@ jobs:
         # Transfer the frontend build files to the server
         rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" frontend-expo/web-build/ ${SERVER_USER}@${SERVER_IP}:/var/www/frontend-expo/
 
-        # Update app.json on the server
-        ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-          "sed -i \"s|\\\"API_URL\\\": \\\"http://localhost:8888/public\\\"|\\\"API_URL\\\": \\\"http://${SECRETS_SERVER_IP}/service\\\"|\" /var/www/frontend-expo/app.json"
-
-        # Update .env on the server
-        ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-          "sed -i \"s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|\" /var/www/frontend-expo/.env"
-
         # Cleanup
         rm /tmp/private_key
