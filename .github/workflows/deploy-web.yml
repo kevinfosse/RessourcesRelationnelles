@@ -1,4 +1,4 @@
-name: Build and Deploy to Vercel
+name: Deploy to Vercel
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +20,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '16'
-
-    - name: Navigate to project directory
-      run: cd frontend-expo
 
     - name: Install Dependencies
       run: |
@@ -43,5 +40,4 @@ jobs:
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       run: |
-        cd frontend-expo
-        vercel --token $VERCEL_TOKEN --prod --confirm
+        vercel --prod --yes --scope $VERCEL_ORG_ID --cwd frontend-expo
