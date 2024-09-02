@@ -53,7 +53,7 @@ jobs:
 
         # Define the server details
         SERVER_USER="root"
-        SERVER_IP= ${{ secrets.SERVER_IP }}
+        SERVER_IP=${{ secrets.SERVER_IP }}
         SERVER_PATH="/var/www"
 
         # Sync the files using rsync via SSH
