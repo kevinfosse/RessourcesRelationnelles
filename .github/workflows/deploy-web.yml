@@ -1,38 +1,34 @@
-name: Build and Deploy Expo Web App
+name: Deploy to Vercel
+
 on:
   push:
     branches:
-      - main  # Déclenche le workflow sur les pushes à la branche principale
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
+    - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # Spécifiez la version de Node.js que vous utilisez
+        node-version: '16'
 
-    - name: Install dependencies
-      run: |
-        cd frontend-expo
-        npm install
-
-    - name: Build Expo Web App
-      run: |
-        cd frontend-expo
-        npm run web
+    - name: Install Vercel CLI
+      run: npm install -g vercel
 
     - name: Deploy to Vercel
-      uses: vercel/vercel-action@v2
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod'
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      run: |
+        vercel login --token $VERCEL_TOKEN
+        vercel --prod --confirm --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
