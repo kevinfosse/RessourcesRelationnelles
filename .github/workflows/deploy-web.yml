@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -36,23 +33,13 @@ jobs:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         SERVER_USER: ${{ secrets.SERVER_USER }}
         SERVER_IP: ${{ secrets.SERVER_IP }}
-        REMOTE_FRONTEND_PATH: ${{ secrets.REMOTE_FRONTEND_PATH }}
-        REMOTE_BACKEND_PATH: ${{ secrets.REMOTE_BACKEND_PATH }}
       run: |
         # Save SSH private key to a file
         echo "$SSH_PRIVATE_KEY" > /tmp/private_key
         chmod 600 /tmp/private_key
 
-        # Define the paths
-        LOCAL_BUILD_PATH="frontend-expo/web-build/"
-        REMOTE_FRONTEND_PATH="/var/www/html"
-        REMOTE_BACKEND_PATH="/var/www/service"
-
         # Transfer the frontend build files to the server
-        rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" $LOCAL_BUILD_PATH ${SERVER_USER}@${SERVER_IP}:${REMOTE_FRONTEND_PATH}
-
-        # Optionally, sync the backend if needed
-        # rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${REMOTE_BACKEND_PATH}
+        rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" frontend-expo/web-build/ ${SERVER_USER}@${SERVER_IP}:/var/www/frontend-expo/
 
         # Cleanup
         rm /tmp/private_key
