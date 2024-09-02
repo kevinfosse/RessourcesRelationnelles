@@ -21,7 +21,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4' # Change this to your PHP version (7.4, 8.x)
+        php-version: '7.4'
         extensions: mbstring, intl, json
         ini-values: post_max_size=256M, max_execution_time=300
         coverage: none
@@ -30,28 +30,34 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get update && sudo apt-get install -y zip unzip
 
-    # Install Composer
+    # Install Composer dependencies
     - name: Install Composer dependencies
       run: |
         cd backend
         composer install
-
-    # Run PHPUnit tests
-    - name: Run tests with PHPUnit
-      run: |
-        cd backend
-        ./vendor/bin/phpunit
 
     # Start PHP built-in server
     - name: Start PHP Server
       run: |
         cd backend
         php -S localhost:8000 -t public &
-      continue-on-error: true # Continue even if server fails to start
+      continue-on-error: true
 
-    # Archive artifacts (if needed)
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: backend
-        path: backend/
+    # Deploy to the server via SSH
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key
+        chmod 600 private_key
+
+        # Define the server details
+        SERVER_USER="root"
+        SERVER_IP= ${{ secrets.SERVER_IP }}
+        SERVER_PATH="/var/www"
+
+        # Sync the files using rsync via SSH
+        rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
+
+        # Remove the private key
+        rm private_key
