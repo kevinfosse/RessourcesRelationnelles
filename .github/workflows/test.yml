@@ -1,0 +1,9 @@
+name: "test"
+on: push
+jobs: 
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      run: echo ${{ secrets.EXPO_TOKEN }}

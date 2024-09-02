@@ -1,0 +1,57 @@
+name: CI - CodeIgniter Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Set up PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4' # Change this to your PHP version (7.4, 8.x)
+        extensions: mbstring, intl, json
+        ini-values: post_max_size=256M, max_execution_time=300
+        coverage: none
+
+    # Install dependencies (zip, unzip, curl, etc.)
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y zip unzip
+
+    # Install Composer
+    - name: Install Composer dependencies
+      run: |
+        cd backend
+        composer install
+
+    # Run PHPUnit tests
+    - name: Run tests with PHPUnit
+      run: |
+        cd backend
+        ./vendor/bin/phpunit
+
+    # Start PHP built-in server
+    - name: Start PHP Server
+      run: |
+        cd backend
+        php -S localhost:8000 -t public &
+      continue-on-error: true # Continue even if server fails to start
+
+    # Archive artifacts (if needed)
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend
+        path: backend/

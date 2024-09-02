@@ -27,7 +27,11 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "API_URL": "http://localhost:8888/public"
-    }
+      "API_URL": "http://localhost:8888/public",
+      "eas": {
+        "projectId": "8b2c8ad2-0a8d-4cd9-8a99-7a0eb350a590"
+      }
+    },
+    "owner": "cdagroupe1"
   }
 }
