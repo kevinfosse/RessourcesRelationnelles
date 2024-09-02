@@ -38,5 +38,5 @@ jobs:
         with:
           name: expo-android-build
           path: |
-            /home/runner/work/RessourcesRelationnelles/RessourcesRelationnelles/frontend-expo/android/
+            **/*.apk
        
