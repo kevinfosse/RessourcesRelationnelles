@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to Server
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '16'
@@ -31,13 +31,28 @@ jobs:
         cd frontend-expo
         npm run build:web
 
-    - name: Install Vercel CLI
-      run: npm install -g vercel
-
-    - name: Deploy to Vercel
+    - name: Deploy to Server
       env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        REMOTE_FRONTEND_PATH: ${{ secrets.REMOTE_FRONTEND_PATH }}
+        REMOTE_BACKEND_PATH: ${{ secrets.REMOTE_BACKEND_PATH }}
       run: |
-        vercel --prod --yes --scope $VERCEL_ORG_ID --cwd frontend-expo
+        # Save SSH private key to a file
+        echo "$SSH_PRIVATE_KEY" > /tmp/private_key
+        chmod 600 /tmp/private_key
+
+        # Define the paths
+        LOCAL_BUILD_PATH="frontend-expo/web-build/"
+        REMOTE_FRONTEND_PATH="/var/www/html"
+        REMOTE_BACKEND_PATH="/var/www/service"
+
+        # Transfer the frontend build files to the server
+        rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" $LOCAL_BUILD_PATH ${SERVER_USER}@${SERVER_IP}:${REMOTE_FRONTEND_PATH}
+
+        # Optionally, sync the backend if needed
+        # rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${REMOTE_BACKEND_PATH}
+
+        # Cleanup
+        rm /tmp/private_key
