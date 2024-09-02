@@ -21,6 +21,14 @@
         "backgroundColor": "#ffffff"
       }
     },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "build": {
+        "babel": {
+          "presets": ["next/babel"]
+        }
+      }
+    },
     "extra": {
       "API_URL": "http://localhost:8888/public",
       "eas": {
