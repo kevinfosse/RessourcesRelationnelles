@@ -33,10 +33,10 @@ jobs:
       - name: Build on EAS
         run: eas build --platform all --non-interactive --no-wait
 
-  - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: expo-android-build
-          path: |
-            /home/runner/work/RessourcesRelationnelles/RessourcesRelationnelles/frontend-expo/android/app/build/outputs/apk/debug/app-debug.apk
-            /home/runner/work/RessourcesRelationnelles/RessourcesRelationnelles/frontend-expo/android/app/build/outputs/apk/release/app-release.apk
+      - name: Upload Build Artifact
+          uses: actions/upload-artifact@v3
+          with:
+           name: expo-android-build
+            path: |
+              /home/runner/work/RessourcesRelationnelles/RessourcesRelationnelles/frontend-expo/android/app/build/outputs/apk/debug/app-debug.apk
+              /home/runner/work/RessourcesRelationnelles/RessourcesRelationnelles/frontend-expo/android/app/build/outputs/apk/release/app-release.apk
