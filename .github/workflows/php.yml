@@ -36,7 +36,7 @@ jobs:
         cd backend
         composer install
 
-    # Start PHP built-in server
+    # Start PHP built-in server (optional)
     - name: Start PHP Server
       run: |
         cd backend
@@ -58,6 +58,15 @@ jobs:
 
         # Sync the files using rsync via SSH
         rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
+
+        # Set permissions and ownership
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} << 'EOF'
+          sudo chown -R www-data:www-data /var/www
+          sudo find /var/www -type d -exec chmod 755 {} \;
+          sudo find /var/www -type f -exec chmod 644 {} \;
+        EOF
+
+        # Install Composer dependencies on the server
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} "export COMPOSER_ALLOW_SUPERUSER=1 && cd ${SERVER_PATH} && composer install --ignore-platform-req=ext-intl --ignore-platform-req=ext-dom"
         
         # Remove the private key
