@@ -42,10 +42,10 @@ jobs:
         rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" frontend-expo/web-build/ ${SERVER_USER}@${SERVER_IP}:/var/www/frontend-expo/
 
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-        "sed -i \"s|\\\"API_URL\\\": \\\"http://localhost:8888/public\\\"|\\\"API_URL\\\": \\\"http://${SECRETS_SERVER_IP}/service\\\"|\" /var/www/frontend-expo/app.json"
+        "sed -i \"s|\\\"API_URL\\\": \\\"http://localhost:8888/public\\\"|\\\"API_URL\\\": \\\"http://${SERVER_IP}/service\\\"|\" /var/www/frontend-expo/app.json"
 
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-        "sed -i \"s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|\" /var/www/frontend-expo/.env"
+        "sed -i \"s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SERVER_IP}/service|\" /var/www/frontend-expo/.env"
 
 
 
