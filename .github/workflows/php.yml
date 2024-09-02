@@ -60,10 +60,10 @@ jobs:
         # Sync the files using rsync via SSH
         rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
 
-        # Changing password
-        ssh -i private_key -o StrictHostKeyChecking=no root@${SERVER_IP} \
-          "sed -i \"s/'password'     => ''/'password'     => '$DB_PASSWORD'/' /var/www/app/Config/Database.php"
-
+         # Change the password in Database.php
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+        "sed -i \"s/'password'     => ''/'password'     => '${DB_PASSWORD}'/\" /var/www/app/Config/Database.php"
+      
         # Set permissions and ownership
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} << 'EOF'
           sudo chown -R www-data:www-data /var/www
