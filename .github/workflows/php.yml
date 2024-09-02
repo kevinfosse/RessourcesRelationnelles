@@ -42,6 +42,13 @@ jobs:
         cd backend
         php -S localhost:8000 -t public &
       continue-on-error: true
+      
+    # Update Database.php Password
+    - name: Update Database.php with new DB password
+      env:
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: |
+        sudo sed -i "s/'password'     => ''/'password'     => '$DB_PASSWORD'/" /var/www/app/Config/Database.php
 
     # Deploy to the server via SSH
     - name: Deploy to server
