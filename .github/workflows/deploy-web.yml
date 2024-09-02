@@ -30,5 +30,8 @@ jobs:
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       run: |
-        vercel login --token $VERCEL_TOKEN
+        # Set up Vercel authentication
+        echo $VERCEL_TOKEN > ~/.vercel-token
+
+        # Deploy to Vercel
         vercel --prod --confirm --scope $VERCEL_ORG_ID --project $VERCEL_PROJECT_ID
