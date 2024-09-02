@@ -31,7 +31,7 @@ jobs:
     - name: Deploy to Server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_USER: "root"
         SERVER_IP: ${{ secrets.SERVER_IP }}
       run: |
         # Save SSH private key to a file
