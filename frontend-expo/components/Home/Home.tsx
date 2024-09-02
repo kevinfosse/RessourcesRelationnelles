@@ -28,7 +28,7 @@ const Home = ({navigation}: any) => {
 
     return (
         <View>
-            <Text style={styles.title}>Les dernières des ressources</Text>
+            <Text style={styles.title}>Les dernièeeres des ressources</Text>
             <View style={styles.layout}></View>
             <ScrollView>
                 <ResourcesTable tableHead={tableHead} ressources={ressources} displayAction={false} navigation={navigation}></ResourcesTable>
