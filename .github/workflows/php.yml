@@ -42,18 +42,12 @@ jobs:
         cd backend
         php -S localhost:8000 -t public &
       continue-on-error: true
-      
-    # Update Database.php Password
-    - name: Update Database.php with new DB password
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      run: |
-        sudo sed -i "s/'password'     => ''/'password'     => '$DB_PASSWORD'/" /var/www/app/Config/Database.php
 
     # Deploy to the server via SSH
     - name: Deploy to server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
@@ -65,6 +59,10 @@ jobs:
 
         # Sync the files using rsync via SSH
         rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
+
+        # Changing password
+        ssh -i private_key -o StrictHostKeyChecking=no root@${SERVER_IP} \
+          "sed -i \"s/'password'     => ''/'password'     => '$DB_PASSWORD'/' /var/www/app/Config/Database.php"
 
         # Set permissions and ownership
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} << 'EOF'
