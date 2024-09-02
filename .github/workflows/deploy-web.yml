@@ -23,6 +23,14 @@ jobs:
         cd frontend-expo
         npm install
 
+    - name: Modify Configuration Files
+      env:
+        SECRETS_SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        jq --arg url "http://${SECRETS_SERVER_IP}/service" \
+           '.API_URL = $url' frontend-expo/app.json > frontend-expo/app.json.tmp && mv frontend-expo/app.json.tmp frontend-expo/app.json
+        sed -i "s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|" frontend-expo/.env
+
     - name: Build Project
       run: |
         cd frontend-expo
@@ -43,14 +51,11 @@ jobs:
 
         # Update app.json on the server
         ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-        "sed -i \"s|\\\"API_URL\\\": \\\"http://localhost:8888/public\\\"|\\\"API_URL\\\": \\\"http://${SECRETS_SERVER_IP}/service\\\"|\" /var/www/frontend-expo/app.json"
-      
+          "sed -i \"s|\\\"API_URL\\\": \\\"http://localhost:8888/public\\\"|\\\"API_URL\\\": \\\"http://${SECRETS_SERVER_IP}/service\\\"|\" /var/www/frontend-expo/app.json"
+
         # Update .env on the server
         ssh -i /tmp/private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
-        "sed -i \"s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|\" /var/www/frontend-expo/.env"
-
-
-
+          "sed -i \"s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://${SECRETS_SERVER_IP}/service|\" /var/www/frontend-expo/.env"
 
         # Cleanup
         rm /tmp/private_key
