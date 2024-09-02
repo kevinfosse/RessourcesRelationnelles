@@ -68,6 +68,6 @@ jobs:
 
         # Install Composer dependencies on the server
         ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} "export COMPOSER_ALLOW_SUPERUSER=1 && cd ${SERVER_PATH} && composer install --ignore-platform-req=ext-intl --ignore-platform-req=ext-dom"
-        
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} "sudo systemctl restart apache2"
         # Remove the private key
         rm private_key
