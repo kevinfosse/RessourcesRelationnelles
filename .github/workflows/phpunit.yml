@@ -40,7 +40,7 @@ jobs:
     - name: Run PHPUnit tests
       run: |
         cd backend
-        vendor/bin/phpunit --configuration phpunit.xml
+        vendor/bin/phpunit --configuration phpunit.xml.dist
 
     # Start PHP built-in server (optional)
     - name: Start PHP test server
