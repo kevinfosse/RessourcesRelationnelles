@@ -1,0 +1,33 @@
+name: Test build Expo
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches: [dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Installe Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Installe les dépendences
+      run: |
+        cd frontend-expo
+        npm install
+        
+    - name: Build le project
+      run: |
+        cd frontend-expo
+        npm run build:web
+
+    

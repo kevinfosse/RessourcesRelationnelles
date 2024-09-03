@@ -1,0 +1,42 @@
+name: CI - Building Expo Android Application
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  build:
+    name: Build app android
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-expo
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Installe EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build avec EAS
+        run: eas build --platform android --profile preview --local --non-interactive --no-wait
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: expo-android-build
+          path: |
+            **/*.apk
+       

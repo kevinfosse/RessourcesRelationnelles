@@ -1,0 +1,53 @@
+name: Deploiement sur le serveur
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Installe Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Installe les dépendences
+      run: |
+        cd frontend-expo
+        npm install
+
+    - name: Modifie les fichiers de confs
+      env:
+        SECRETS_SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        jq --arg url "http://localhost/service" \
+           '.API_URL = $url' frontend-expo/app.json > frontend-expo/app.json.tmp && mv frontend-expo/app.json.tmp frontend-expo/app.json
+        sed -i "s|^EXPO_PUBLIC_URL=.*|EXPO_PUBLIC_URL=http://localhost/service|" frontend-expo/.env
+
+    - name: Build le project
+      run: |
+        cd frontend-expo
+        npm run build:web
+
+    - name: Deploie sur le serveur
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: "root"
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        # Save SSH private key to a file
+        echo "$SSH_PRIVATE_KEY" > /tmp/private_key
+        chmod 600 /tmp/private_key
+
+        # Transfer the frontend build files to the server
+        rsync -avz -e "ssh -i /tmp/private_key -o StrictHostKeyChecking=no" frontend-expo/web-build/ ${SERVER_USER}@${SERVER_IP}:/var/www/frontend-expo/
+
+        # Cleanup
+        rm /tmp/private_key

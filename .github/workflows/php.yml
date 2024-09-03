@@ -1,0 +1,78 @@
+name: CI - CodeIgniter Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Set up PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, intl, json
+        ini-values: post_max_size=256M, max_execution_time=300
+        coverage: none
+
+    # Install dependencies (zip, unzip, curl, etc.)
+    - name: Installe les dependences
+      run: sudo apt-get update && sudo apt-get install -y zip unzip
+
+    # Install Composer dependencies
+    - name: Install Composer dependencies
+      run: |
+        cd backend
+        composer install
+
+    # Start PHP built-in server (optional)
+    - name: Demarre serveur php de test
+      run: |
+        cd backend
+        php -S localhost:8000 -t public &
+      continue-on-error: true
+
+    # Deploy to the server via SSH
+    - name: Deploie sur le serveur
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key
+        chmod 600 private_key
+
+        # Define the server details
+        SERVER_USER="root"
+        SERVER_IP=${{ secrets.SERVER_IP }}
+        SERVER_PATH="/var/www"
+
+        # Sync the files using rsync via SSH
+        rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" backend/ ${SERVER_USER}@${SERVER_IP}:${SERVER_PATH}
+
+         # Change the password in Database.php
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} \
+        "sed -i \"s/'password'     => ''/'password'     => '${DB_PASSWORD}'/\" /var/www/app/Config/Database.php"
+      
+        # Set permissions and ownership
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} << 'EOF'
+          sudo chown -R www-data:www-data /var/www
+          sudo find /var/www -type d -exec chmod 755 {} \;
+          sudo find /var/www -type f -exec chmod 644 {} \;
+        EOF
+
+        # Install Composer dependencies on the server
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} "export COMPOSER_ALLOW_SUPERUSER=1 && cd ${SERVER_PATH} && composer install --ignore-platform-req=ext-intl --ignore-platform-req=ext-dom"
+        ssh -i private_key -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} "sudo systemctl restart apache2"
+        # Remove the private key
+        rm private_key
