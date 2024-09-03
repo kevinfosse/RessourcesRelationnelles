@@ -1,0 +1,37 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install -g expo-cli
+    npm install
+  displayName: 'Install Expo CLI and project dependencies'
+
+- script: |
+    expo build:android -t apk
+  displayName: 'Build Android APK'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(System.DefaultWorkingDirectory)/android/app/build/outputs/apk/release/'
+    artifactName: 'apk'
+
+- script: |
+    npm run build
+  displayName: 'Build Web'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Abonnement Azure 1'
+    appType: 'webApp'
+    WebAppName: 'RessourcesRelationnelle'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/frontend-expo'
