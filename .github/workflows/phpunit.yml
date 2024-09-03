@@ -24,7 +24,7 @@ jobs:
         php-version: '7.4'
         extensions: mbstring, intl, json
         ini-values: post_max_size=256M, max_execution_time=300
-        coverage: none
+        coverage: xdebug
 
     # Install dependencies (zip, unzip, curl, etc.)
     - name: Install dependencies
