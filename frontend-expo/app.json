@@ -1,14 +1,11 @@
 {
   "expo": {
-    "name": "frontend-expo",
+    "name": "Ressource Relationelles",
     "slug": "ressourcesrelationnelles",
-    "sdkVersion": "41.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,18 +22,23 @@
     "android": {
       "package": "com.ressources.relationnelles",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "build": {
+        "babel": {
+          "presets": ["next/babel"]
+        }
+      }
     },
     "extra": {
       "API_URL": "http://localhost:8888/public",
       "eas": {
         "projectId": "7c263122-09fe-4594-bc60-fb7e18182891"
       }
-    }
+    },
+    "owner": "cdagroupe1"
   }
 }
