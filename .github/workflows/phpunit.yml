@@ -1,0 +1,50 @@
+name: CI - PHPUnit
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Set up PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, intl, json
+        ini-values: post_max_size=256M, max_execution_time=300
+        coverage: none
+
+    # Install dependencies (zip, unzip, curl, etc.)
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y zip unzip
+
+    # Install Composer dependencies
+    - name: Install Composer dependencies
+      run: |
+        cd backend
+        composer install
+
+    # Run PHPUnit tests
+    - name: Run PHPUnit tests
+      run: |
+        cd backend
+        vendor/bin/phpunit --configuration phpunit.xml
+
+    # Start PHP built-in server (optional)
+    - name: Start PHP test server
+      run: |
+        cd backend
+        php -S localhost:8000 -t public &
+      continue-on-error: false
